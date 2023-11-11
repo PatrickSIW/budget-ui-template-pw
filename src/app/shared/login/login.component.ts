@@ -21,12 +21,11 @@ export class LoginComponent {
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly authService: AuthService,
-    private readonly router: Router
+    private readonly router: Router,
   ) {}
 
   login = (loginProvider: LoginProvider): void => {
     const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] ?? '/';
     loginProvider.loginMethod(() => this.router.navigateByUrl(returnUrl));
   };
-
 }

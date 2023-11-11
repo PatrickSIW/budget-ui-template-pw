@@ -1,41 +1,42 @@
-import {Component} from '@angular/core';
-import {CategoryModalComponent} from '../category-modal/category-modal.component';
-import {InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent} from '@ionic/angular';
-import {Category, CategoryCriteria, SortOption} from '../../shared/domain';
-import {CategoryService} from "../category.service";
-import {ToastService} from "../../shared/service/toast.service";
-import {debounce, finalize, interval, Subscription} from "rxjs";
-import {FormBuilder, FormGroup} from "@angular/forms";
+import { Component } from '@angular/core';
+import { CategoryModalComponent } from '../category-modal/category-modal.component';
+import { InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent } from '@ionic/angular';
+import { Category, CategoryCriteria, SortOption } from '../../shared/domain';
+import { CategoryService } from '../category.service';
+import { ToastService } from '../../shared/service/toast.service';
+import { debounce, finalize, interval, Subscription } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
 })
-
 export class CategoryListComponent {
   readonly searchForm: FormGroup;
   readonly sortOptions: SortOption[] = [
-    {label: 'Created at (newest first)', value: 'createdAt,desc'},
-    {label: 'Created at (oldest first)', value: 'createdAt,asc'},
-    {label: 'Name (A-Z)', value: 'name,asc'},
-    {label: 'Name (Z-A)', value: 'name,desc'},
+    { label: 'Created at (newest first)', value: 'createdAt,desc' },
+    { label: 'Created at (oldest first)', value: 'createdAt,asc' },
+    { label: 'Name (A-Z)', value: 'name,asc' },
+    { label: 'Name (Z-A)', value: 'name,desc' },
   ];
-  private readonly searchFormSubscription: Subscription
+  private readonly searchFormSubscription: Subscription;
   categories: Category[] | null = null;
   readonly initialSort = 'name,asc';
   lastPageReached = false;
   loading = false;
-  searchCriteria: CategoryCriteria = {page: 0, size: 25, sort: this.initialSort};
+  searchCriteria: CategoryCriteria = { page: 0, size: 25, sort: this.initialSort };
 
-  constructor(private readonly modalCtrl: ModalController,
-              private readonly categoryService: CategoryService,
-              private readonly toastService: ToastService,
-              private readonly formBuilder: FormBuilder,) {
-    this.searchForm = this.formBuilder.group({name: [], sort: [this.initialSort]});
+  constructor(
+    private readonly modalCtrl: ModalController,
+    private readonly categoryService: CategoryService,
+    private readonly toastService: ToastService,
+    private readonly formBuilder: FormBuilder,
+  ) {
+    this.searchForm = this.formBuilder.group({ name: [], sort: [this.initialSort] });
     this.searchFormSubscription = this.searchForm.valueChanges
       .pipe(debounce((value) => interval(value.name?.length ? 400 : 0)))
       .subscribe((value) => {
-        this.searchCriteria = {...this.searchCriteria, ...value, page: 0};
+        this.searchCriteria = { ...this.searchCriteria, ...value, page: 0 };
         this.loadCategories();
       });
   }
@@ -43,18 +44,14 @@ export class CategoryListComponent {
   async openModal(category?: Category): Promise<void> {
     const modal = await this.modalCtrl.create({
       component: CategoryModalComponent,
-      componentProps: {category: category ? {...category} : {}},
+      componentProps: { category: category ? { ...category } : {} },
     });
     modal.present();
-    const {role} = await modal.onWillDismiss();
+    const { role } = await modal.onWillDismiss();
     if (role === 'refresh') this.reloadCategories();
-
   }
 
-
-
-  private loadCategories(next: () => void = () => {
-  }): void {
+  private loadCategories(next: () => void = () => {}): void {
     if (!this.searchCriteria.name) delete this.searchCriteria.name;
     this.loading = true;
     this.categoryService
@@ -92,6 +89,4 @@ export class CategoryListComponent {
   ionViewDidLeave(): void {
     this.searchFormSubscription.unsubscribe();
   }
-
-
 }

@@ -8,9 +8,9 @@
             <ion-label>Budget UI</ion-label>
             <ion-chip>
               <ion-avatar>
-                <ion-img [src]="(authService.currentUser() | async)?.photoURL"/>
+                <ion-img [src]="(authService.currentUser() | async)?.photoURL" />
               </ion-avatar>
-              <ion-label>{{(authService.currentUser() | async)?.displayName}}</ion-label>
+              <ion-label>{{ (authService.currentUser() | async)?.displayName }}</ion-label>
             </ion-chip>
           </ion-list-header>
           <ion-footer>

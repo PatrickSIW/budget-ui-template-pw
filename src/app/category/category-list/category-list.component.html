@@ -1,15 +1,11 @@
-
 <ion-header role="banner" class="md header-md header-collapse-none hydrated">
-  <ion-toolbar >
-      <ion-title>Categories</ion-title>
-        <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
-    </ion-toolbar>
+  <ion-toolbar>
+    <ion-title>Categories</ion-title>
+    <ion-progress-bar *ngIf="loading" type="indeterminate"></ion-progress-bar>
+  </ion-toolbar>
 </ion-header>
 
-
-
 <ion-content>
-
   <!-- Search & Sort -->
   <ion-grid class="ion-padding" [formGroup]="searchForm">
     <ion-row>
@@ -18,7 +14,7 @@
           <ion-icon name="swap-vertical" slot="start"></ion-icon>
           <ion-select interface="popover" formControlName="sort">
             <ion-select-option *ngFor="let sortOption of sortOptions" [value]="sortOption.value">
-              {{sortOption.label}}
+              {{ sortOption.label }}
             </ion-select-option>
           </ion-select>
         </ion-item>
@@ -44,7 +40,6 @@
 
   <!-- Category List -->
   <ion-list [ngSwitch]="categories?.length" inset="true">
-
     <!-- Skeleton -->
     <ng-container *ngSwitchCase="null">
       <ion-item *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
@@ -69,19 +64,14 @@
         [disabled]="loading"
         (click)="openModal(category)"
       >
-        <ion-label> {{category.name}} </ion-label>
+        <ion-label> {{ category.name }} </ion-label>
       </ion-item>
     </ng-container>
-
   </ion-list>
 
-
-
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button (click)="openModal()">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
-
-

@@ -1,10 +1,9 @@
-
 <!-- ------ -->
 <!-- Header -->
 <!-- ------ -->
 <ion-header>
   <ion-toolbar>
-    <ion-title>{{category.id ? 'Edit' : 'Add'}} category</ion-title>
+    <ion-title>{{ category.id ? 'Edit' : 'Add' }} category</ion-title>
     <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
     <ion-buttons slot="start">
       <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
@@ -13,15 +12,12 @@
       </ion-button>
     </ion-buttons>
 
-
-
     <ion-buttons slot="end">
       <ion-button (click)="save()" [disabled]="categoryForm.pristine || categoryForm.invalid || submitting">
         <ion-icon slot="start" name="save"></ion-icon>
         Save
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
 

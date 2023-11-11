@@ -10,8 +10,8 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { environment } from '../environments/environment';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import {LoginComponent} from "./shared/login/login.component";
-import {AuthInterceptor} from "./shared/interceptor/auth.interceptor";
+import { LoginComponent } from './shared/login/login.component';
+import { AuthInterceptor } from './shared/interceptor/auth.interceptor';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(locale);
@@ -29,7 +29,7 @@ registerLocaleData(locale);
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [

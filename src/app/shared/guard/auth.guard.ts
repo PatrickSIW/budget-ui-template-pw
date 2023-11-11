@@ -3,7 +3,7 @@ import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/ro
 import { map, Observable } from 'rxjs';
 import { AuthService } from '../service/auth.service';
 import { loginPath } from '../routes';
-import {LoginComponent} from "../login/login.component";
+import { LoginComponent } from '../login/login.component';
 
 @Injectable({ providedIn: 'root' })
 export class AuthGuard {
