@@ -40,7 +40,6 @@ export class CategoryModalComponent {
   }
 
   save(): void {
-    console.log(this.categoryForm.value);
     this.submitting = true;
     this.categoryService
       .upsertCategory(this.categoryForm.value)
