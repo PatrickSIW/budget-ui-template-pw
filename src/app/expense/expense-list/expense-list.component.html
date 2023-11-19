@@ -32,7 +32,8 @@
       </ion-col>
       <ion-col size="12" size-sm="4">
         <ion-item>
-          <ion-icon name="Category" slot="start"></ion-icon>
+          <ion-icon name="pricetag" slot="start"></ion-icon>
+          <ion-select interface="popover" value=""></ion-select>
         </ion-item>
       </ion-col>
       <ion-col size="12" size-sm="4">
@@ -44,3 +45,28 @@
     </ion-row>
   </ion-grid>
 
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>{{ date | date:'MMMM yyyy' }}</ion-title>
+    <ion-buttons slot="start">
+      <ion-button type="button" class="button-native" (click)="subtractMonth()">
+        <ion-icon slot="start" name="arrow-back">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button type="button" class="button-native" (click)="addMonth()">
+        <ion-icon slot="end" name="arrow-forward">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

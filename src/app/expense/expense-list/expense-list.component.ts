@@ -10,7 +10,12 @@ import { Expense } from '../../shared/domain';
 })
 export class ExpenseListComponent {
   date = set(new Date(), { date: 1 });
-
+  subtractMonth() {
+    this.date.setMonth(this.date.getMonth() - 1);
+  }
+  addMonth() {
+    this.date.setMonth(this.date.getMonth() + 1);
+  }
   constructor(private readonly modalCtrl: ModalController) {}
 
   addMonths = (number: number): void => {
