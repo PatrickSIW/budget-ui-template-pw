@@ -45,7 +45,17 @@
     </ion-row>
   </ion-grid>
 
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <!-- Category list -->
+  <ion-list inset="true">
+    <!-- Categories -->
+
+    <ion-item  button="true" [detail]="true" (click)="openModal()">
+      <ion-label></ion-label>
+    </ion-item>
+
+  </ion-list>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="openModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
