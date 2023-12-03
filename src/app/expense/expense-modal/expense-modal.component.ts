@@ -6,6 +6,8 @@ import { CategoryModalComponent } from '../../category/category-modal/category-m
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
 import { Category } from '../../shared/domain';
 import { formatISO, parseISO } from 'date-fns';
+import {ToastService} from "../../shared/service/toast.service";
+import {CategoryService} from "../../category/category.service";
 
 
 @Component({
@@ -14,8 +16,6 @@ import { formatISO, parseISO } from 'date-fns';
 })
 export class ExpenseModalComponent {
   categories: Category[] = [];
-  categoryService: any;
-  toastService: any;
   expenseService: any;
   expenseForm: any;
 
@@ -26,6 +26,8 @@ export class ExpenseModalComponent {
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
+    private readonly toastService: ToastService,
+    private readonly categoryService: CategoryService,
   ) {}
   private loadAllCategories(): void {
     this.categoryService.getAllCategories({ sort: 'name,asc' }).subscribe({
