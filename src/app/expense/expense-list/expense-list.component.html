@@ -46,6 +46,13 @@
     </ion-row>
   </ion-grid>
 
+  //vohin ?
+  <ion-item-group *ngFor="let expenseGroup of expenseGroups">
+    <ion-item *ngFor="let expense of expenseGroup.expenses">
+    </ion-item>
+  </ion-item-group>
+
+
   <!-- Category list -->
   <ion-list inset="true">
     <!-- Categories -->

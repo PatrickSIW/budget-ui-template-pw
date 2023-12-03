@@ -16,9 +16,14 @@ interface ExpenseGroup {
   selector: 'app-expense-overview',
   templateUrl: './expense-list.component.html',
 })
+
 export class ExpenseListComponent {
   date = set(new Date(), { date: 1 });
   searchCriteria: any;
+  loading: boolean;
+  expenseService: any;
+  lastPageReached: any;
+
   subtractMonth() {
     this.date.setMonth(this.date.getMonth() - 1);
   }
@@ -81,7 +86,7 @@ export class ExpenseListComponent {
               ...expenseGroup.expenses,
             ]);
         },
-        error: (error) => this.toastService.displayErrorToast('Could not load expenses', error),
+        error: (error: any) => this.toastService.displayErrorToast('Could not load expenses', error),
       });
   }
 
