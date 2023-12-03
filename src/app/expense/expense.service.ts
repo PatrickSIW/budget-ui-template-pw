@@ -13,13 +13,13 @@ import { environment } from '../../environments/environment';
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
   private readonly apiUrl = `${environment.backendUrl}/expenses`;
-  private readonly apiV2Url = `${environment.backendUrl}/v2/expenses`;
+
 
   constructor(private readonly httpClient: HttpClient) {}
 
   // Read
 
-  getExpense = (pagingCriteria: ExpenseCriteria): Observable<Page<Expense>> =>
+  getExpenses = (pagingCriteria: ExpenseCriteria): Observable<Page<Expense>> =>
     this.httpClient.get<Page<Expense>>(this.apiUrl, { params: new HttpParams({ fromObject: { ...pagingCriteria } }) });
 
 
