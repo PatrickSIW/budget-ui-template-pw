@@ -10,9 +10,11 @@ import {
 import { environment } from '../../environments/environment';
 
 
+
 @Injectable({ providedIn: 'root' })
 export class ExpenseService {
   private readonly apiUrl = `${environment.backendUrl}/expenses`;
+
 
 
   constructor(private readonly httpClient: HttpClient) {}

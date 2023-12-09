@@ -6,7 +6,8 @@ import {Category, CategoryCriteria, Expense} from '../../shared/domain';
 import {CategoryService} from "../../category/category.service";
 import {ToastService} from "../../shared/service/toast.service";
 import {formatPeriod} from "../../shared/period";
-import {finalize, from, groupBy, mergeMap, toArray} from "rxjs";
+import {finalize, from, groupBy, mergeMap, of, Subscription, toArray} from "rxjs";
+import {FormBuilder, FormGroup} from "@angular/forms";
 
 interface ExpenseGroup {
   date: string;
@@ -16,28 +17,36 @@ interface ExpenseGroup {
   selector: 'app-expense-overview',
   templateUrl: './expense-list.component.html',
 })
-
 export class ExpenseListComponent {
   date = set(new Date(), { date: 1 });
   searchCriteria: any;
-  loading: boolean;
+  readonly searchForm: FormGroup;
   expenseService: any;
   lastPageReached: any;
+  loading: boolean = false;
+  expenseGroups: any;
+  initialSort: any;
+  categories: Category[] = [];
+
 
   subtractMonth() {
     this.date.setMonth(this.date.getMonth() - 1);
+    //this.date.setMonth(this.date.add(1,"months"));
   }
   addMonth() {
     this.date.setMonth(this.date.getMonth() + 1);
+    console.log(this.date)
+    console.log(this.categories)
   }
-  categories: Category[] = [];
-  expenseGroups: ExpenseGroup[] | null = null;
 
   constructor(
     private readonly modalCtrl: ModalController,
     private readonly categoryService: CategoryService,
     private readonly toastService: ToastService,
-  ) {}
+    private readonly formBuilder: FormBuilder,
+  ) {
+    this.searchForm = this.formBuilder.group({ name: [], sort: [this.initialSort] });
+  }
 
   addMonths = (number: number): void => {
     this.date = addMonths(this.date, number);
@@ -63,9 +72,11 @@ export class ExpenseListComponent {
       .pipe(
         finalize(() => (this.loading = false)),
         mergeMap((expensePage) => {
+          // @ts-ignore
           this.lastPageReached = expensePage.last;
           next();
           if (this.searchCriteria.page === 0 || !this.expenseGroups) this.expenseGroups = [];
+          // @ts-ignore
           return from(expensePage.content).pipe(
             groupBy((expense) => (groupByDate ? expense.date : expense.id)),
             mergeMap((group) => group.pipe(toArray())),
@@ -78,7 +89,7 @@ export class ExpenseListComponent {
             date: expenses[0].date,
             expenses: this.sortExpenses(expenses),
           };
-          const expenseGroupWithSameDate = this.expenseGroups!.find((other) => other.date === expenseGroup.date);
+          const expenseGroupWithSameDate = this.expenseGroups!.find((other:any) => other.date === expenseGroup.date);
           if (!expenseGroupWithSameDate || !groupByDate) this.expenseGroups!.push(expenseGroup);
           else
             expenseGroupWithSameDate.expenses = this.sortExpenses([
@@ -90,5 +101,17 @@ export class ExpenseListComponent {
       });
   }
 
+  private loadAllCategories(): void {
+    this.categoryService.getAllCategories({ sort: 'name,asc' }).subscribe({
+      next: (categories) => (this.categories = categories),
+      error: (error) => this.toastService.displayErrorToast('Could not load categories', error),
+    });
+  }
+  ionViewWillEnter(): void {
+    this.loadAllCategories();
+  }
+
   private sortExpenses = (expenses: Expense[]): Expense[] => expenses.sort((a, b) => a.name.localeCompare(b.name));
+
+  protected readonly of = of;
 }
