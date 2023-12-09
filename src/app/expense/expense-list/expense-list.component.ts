@@ -24,7 +24,7 @@ export class ExpenseListComponent {
   expenseService: any;
   lastPageReached: any;
   loading: boolean = false;
-  expenseGroups: any;
+  expenseGroups: ExpenseGroup[] | null = null;
   initialSort: any;
   categories: Category[] = [];
 
@@ -38,6 +38,7 @@ export class ExpenseListComponent {
     console.log(this.date)
     console.log(this.categories)
   }
+
 
   constructor(
     private readonly modalCtrl: ModalController,

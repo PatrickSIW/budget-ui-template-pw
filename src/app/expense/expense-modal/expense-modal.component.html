@@ -1,4 +1,4 @@
-Expense Modal
+
 <!-- ------ -->
 <!-- Header -->
 <!-- ------ -->
@@ -26,29 +26,39 @@ Expense Modal
 <!-- ------- -->
 <!-- Content -->
 <!-- ------- -->
-<ion-content class="ion-padding" [formGroup]="categoryForm">
+<ion-content class="ion-padding" [formGroup]="expenseForm">
   <ion-item>
     <ion-icon name="text" slot="start"></ion-icon>
     <ion-input [disabled]="submitting"
-               fromControlName="name"
+               formControlName="name"
                maxlength="40"
                placeholder="Enter the expense's name"
-               required="false"></ion-input>
+               [required]="false"></ion-input>
   </ion-item>
   <ion-item>
     <ion-icon name="pricetag" slot="start"></ion-icon>
     <ion-select interface="popover" placeholder="Choose a category" value="Category">
-      <ion-select-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-select-option>
+      <ion-select-option *ngFor="let category of categories" [value]="category.id" >{{category.name}}</ion-select-option>
     </ion-select>
+    <ion-button slot="end" size="small" (click)="openModal()">+</ion-button>
   </ion-item>
   <ion-item>
     <ion-icon name="cash" slot="start"></ion-icon>
-    <ion-input inputmode="decimal" placeholder="Enter the amount in CHF" required step="0.01"></ion-input>
-    </ion-item>
-  <ion-item>
+    <ion-input formControlName="amount" inputmode="decimal" placeholder="Enter the amount in CHF" required step="0.01"></ion-input>
+  </ion-item>
+<ion-item>
     <ion-icon name="calendar" slot="start"></ion-icon>
 
+      <ion-label slot="start"></ion-label>
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime id="datetime"></ion-datetime>
+      </ng-template>
+    </ion-modal>
   </ion-item>
+
 
 
 </ion-content>
