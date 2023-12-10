@@ -47,13 +47,20 @@
     </ion-row>
   </ion-grid>
 
+  <!-- Refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="reloadExpense($event)" [disabled]="loading">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
+  <!-- Infinite Scroll -->
+  <ion-infinite-scroll [disabled]="lastPageReached || loading" (ionInfinite)="loadNextExpensePage($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
-  <!-- Category list -->
-  <ion-list inset="true" [ngSwitch]="categories?.length" inset="true">
-    <!-- Category List -->
+  <!-- Expenses list -->
+  <ion-list [ngSwitch]="categories?.length" inset="true">
 
-      <!-- Skeleton -->
+    <!-- Skeleton -->
       <ng-container *ngSwitchCase="null">
         <ion-item *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]">
           <ion-label>
@@ -61,10 +68,29 @@
           </ion-label>
         </ion-item>
       </ng-container>
-    <!-- Categories -->
-    <ion-item button="true" [detail]="true" (click)="openModal()">
-      <ion-item-group *ngFor="let expenseGroup of expenseGroups"></ion-item-group>
+
+    <!-- Empty List -->
+    <ion-item *ngSwitchCase="0">
+      <ion-icon slot="start" name="alert-circle-outline"></ion-icon>
+      <ion-label> No expenses found </ion-label>
     </ion-item>
+
+    <!-- Expenses -->
+    <ion-item button="true" [detail]="true" (click)="openModal()"></ion-item>
+
+    <ng-container *ngSwitchDefault>
+      <ion-item
+              button="true"
+              *ngFor="let expense of expenses"
+              [detail]="true"
+              [disabled]="loading"
+              (click)="openModal()"
+      >
+        <ion-label> {{ expense.name }} </ion-label>
+      </ion-item>
+    </ng-container>
+
+
 
 
 

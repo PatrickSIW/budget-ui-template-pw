@@ -1,10 +1,10 @@
-import {finalize, from} from "rxjs";
+import {finalize, from, mergeMap, tap} from "rxjs";
 import {Component, NgModule} from '@angular/core';
 import {ModalController, RefresherCustomEvent} from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { CategoryModalComponent } from '../../category/category-modal/category-modal.component';
 import { ActionSheetService } from '../../shared/service/action-sheet.service';
-import {Category, CategoryCriteria} from '../../shared/domain';
+import {Category, CategoryCriteria, Expense} from '../../shared/domain';
 import { formatISO, parseISO } from 'date-fns';
 import {ToastService} from "../../shared/service/toast.service";
 import {CategoryService} from "../../category/category.service";
@@ -27,6 +27,7 @@ export class ExpenseModalComponent {
   loading = false;
   searchCriteria: CategoryCriteria = { page: 0, size: 25, sort: this.initialSort };
   selectedDate: string;
+  category: Category = {} as Category;
 
 
 
@@ -39,23 +40,25 @@ export class ExpenseModalComponent {
     private readonly expenseService: ExpenseService,
     private readonly formBuilder: FormBuilder,
   ) {
-      this.expenseForm = this.formBuilder.group({
-          id: [], // hidden
-          amount: [null, [Validators.required, Validators.min(0.01)]],
-          categoryId: "",
-          date: "",
-          name: ['', [Validators.required, Validators.maxLength(40)]],
-      });
+    this.expenseForm = this.formBuilder.group({
+      id: [], // hidden
+      amount: [null, [Validators.required, Validators.min(0.01)]],
+      categoryId: "",
+      date: "",
+      name: ['', [Validators.required, Validators.maxLength(40)]],
+    });
     this.selectedDate = new Date().toISOString()
   }
+
+    ionViewWillEnter(): void {
+    this.loadAllCategories();
+  }
+
   private loadAllCategories(): void {
     this.categoryService.getAllCategories({ sort: 'name,asc' }).subscribe({
       next: (categories) => (this.categories = categories),
       error: (error) => this.toastService.displayErrorToast('Could not load categories', error),
     });
-  }
-  ionViewWillEnter(): void {
-      this.loadAllCategories();
   }
 
   private loadCategories(next: () => void = () => {}): void {
@@ -122,4 +125,5 @@ export class ExpenseModalComponent {
     this.searchCriteria.page = 0;
     this.loadCategories(() => ($event ? ($event as RefresherCustomEvent).target.complete() : {}));
   }
+
 }
